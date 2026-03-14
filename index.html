@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blackhole // Terminal</title>
+    <style>
+        :root { --purple: #8a2be2; --dark: #050505; --gray: #111; }
+        * { box-sizing: border-box; transition: 0.3s; }
+        body, html { margin: 0; padding: 0; background: var(--dark); color: #fff; font-family: 'Courier New', monospace; height: 100vh; overflow: hidden; }
+
+        /* Initial Loading Terminal */
+        #terminal {
+            padding: 20px;
+            font-size: 14px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .line { margin-bottom: 5px; opacity: 0; animation: fadeIn 0.1s forwards; }
+        @keyframes fadeIn { to { opacity: 1; } }
+
+        /* The Main GUI */
+        #gui {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        h1 { font-size: 3.5rem; letter-spacing: 15px; margin: 0; background: linear-gradient(#fff, var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 900; }
+        .sub { font-size: 10px; letter-spacing: 5px; color: #444; margin-bottom: 40px; }
+
+        .input-box {
+            width: 80%;
+            max-width: 600px;
+            background: var(--gray);
+            border: 1px solid #222;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+        }
+
+        input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid #333;
+            color: #fff;
+            font-size: 1.2rem;
+            text-align: center;
+            outline: none;
+            padding: 10px;
+        }
+
+        input:focus { border-bottom-color: var(--purple); }
+
+        button {
+            margin-top: 30px;
+            background: var(--purple);
+            color: #fff;
+            border: none;
+            padding: 15px 40px;
+            font-weight: bold;
+            letter-spacing: 3px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover { transform: scale(1.05); box-shadow: 0 0 20px var(--purple); }
+
+        /* Fullscreen Viewport */
+        #view { display: none; position: fixed; inset: 0; width: 100%; height: 100%; border: none; background: #fff; z-index: 1000; }
+        .panic-btn { display: none; position: fixed; bottom: 20px; right: 20px; z-index: 1001; background: #ff0000; color: #fff; padding: 10px; border-radius: 5px; cursor: pointer; font-size: 10px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div id="terminal"></div>
+
+    <div id="gui">
+        <h1>BLACKHOLE</h1>
+        <div class="sub">INTERSTELLAR NODE // 66.23.193.126</div>
+        <div class="input-box">
+            <input type="text" id="target" placeholder="HTTPS://DESTINATION.COM" onkeydown="if(event.key==='Enter') launch()">
+            <button onclick="launch()">INITIATE TUNNEL</button>
+        </div>
+    </div>
+
+    <iframe id="view"></iframe>
+    <div class="panic-btn" id="panic" onclick="location.reload()">CLOSE VOID (ESC)</div>
+
+    <script>
+        const term = document.getElementById('terminal');
+        const logs = [
+            "> Initializing Blackhole OS...",
+            "> Connecting to Interstellar Node 66.23.193.126...",
+            "> Bypassing Linewize Security Layer...",
+            "> Encrypting Tunnel Packets...",
+            "> System Ready."
+        ];
+
+        // Terminal Boot Sequence
+        let i = 0;
+        function boot() {
+            if (i < logs.length) {
+                let p = document.createElement('div');
+                p.className = 'line';
+                p.innerText = logs[i];
+                term.appendChild(p);
+                i++;
+                setTimeout(boot, 600);
+            } else {
+                setTimeout(() => {
+                    term.style.display = 'none';
+                    document.getElementById('gui').style.display = 'flex';
+                }, 1000);
+            }
+        }
+        boot();
+
+        function launch() {
+            let val = document.getElementById('target').value;
+            if (!val) return;
+            if (!val.startsWith('http')) val = 'https://' + val;
+
+            const frame = document.getElementById('view');
+            const panic = document.getElementById('panic');
+
+            // Using the Interstellar IP directly as a gateway
+            // Note: If the IP requires a specific subdirectory like /main/, add it here.
+            frame.src = "http://66.23.193.126/main/" + btoa(val);
+            
+            frame.style.display = 'block';
+            panic.style.display = 'block';
+        }
+
+        // Panic Key
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') location.reload();
+        });
+    </script>
+</body>
+</html>
